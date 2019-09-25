@@ -12,37 +12,31 @@ export function factory (service: GroupService) {
       properties: {
         name: { type: 'string' },
         pictures: {
-            type: 'object',
-            properties:{
-              profile: { type: 'string' },
-              banner: { type: 'string' }
-            }
-        },
-        socialNetworks:{
           type: 'object',
           properties: {
-            facebook: { type: 'string' },
-            linkedin: { type: 'string' },
-            twitter: { type: 'string' },
-            medium: { type: 'string' },
-            speakerDeck: { type: 'string' },
-            pinterest: { type: 'string' },
-            instagram: { type: 'string' },
-            others: {
-              type: 'array',
-              items: {
-                type: 'object',
-                properties: {
-                  name: { type: 'string' },
-                  link: { type: 'string' } 
-                }
-              }
+            profile: { type: 'string' },
+            banner: { type: 'string' }
+          }
+        },
+        socialNetworks: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              name: { type: 'string' },
+              link: { type: 'string' }
             }
           }
         },
         tags: {
           type: 'array',
-          items:{
+          items: {
+            type: 'string'
+          }
+        },
+        organizers: {
+          type: 'array',
+          items: {
             type: 'string'
           }
         }

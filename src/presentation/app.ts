@@ -9,6 +9,7 @@ import { createConnection } from '@nindoo/mongodb-data-layer'
 export const app = expresso(async (app, config: IAppConfig, environment: string) => {
   const mongodbConnection = await createConnection(config.database.mongodb)
   container.register('MongodbConnection', { useValue: mongodbConnection })
+  container.register('UserServiceConnection', { useValue: config.microServices.user })
 
   const services = container.resolve(Services)
 

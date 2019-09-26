@@ -6,6 +6,7 @@ import { GroupService } from '../../../services/GroupService'
 import { GroupAlreadyExistsError } from '../../../domain/group/errors/GroupAlreadyExistsError'
 import { FounderNotFoundError } from '../../../domain/group/errors/FounderNotFoundError'
 import { InvalidGroupError } from '../../../domain/group/errors/InvalidGroupError';
+import { OrganizerNotFoundError } from '../../../domain/group/errors/OrganizerNotFoundError'
 
 export function factory (service: GroupService) {
   return [
@@ -58,6 +59,7 @@ export function factory (service: GroupService) {
       if (err instanceof GroupAlreadyExistsError) return next(boom.conflict(err.message, { code: 'group_already_exists' }))
       if (err instanceof InvalidGroupError) return next(boom.badData(err.message, { code: 'invalid_group' }))
       if (err instanceof FounderNotFoundError) return next(boom.badData(err.message, { code: 'founder_not_found' }))
+      if (err instanceof OrganizerNotFoundError) return next(boom.badData(err.message, { code: 'organizer_not_found' }))
 
       next(err)
     }

@@ -34,8 +34,7 @@ export class GroupService {
   }
 
   async searchByFollowedUser (userId: string, page: number = 0, size: number = 10) {
-    const user = await this.userClient.findUserById(userId)
-    if (!user) throw new UserNotFoundError(userId)
+    const user = await this.findUser(userId)
     const communityIds = user.groups.map((groupId: string) => new ObjectId(groupId))
     return this.repository.findManyById(communityIds, page, size)
   }
@@ -50,6 +49,12 @@ export class GroupService {
     const founder = await this.userClient.findUserById(founderId)
     if (!founder) throw new FounderNotFoundError(founderId)
     return founder
+  }
+
+  private async findUser (userId: string) {
+    const user = await this.userClient.findUserById(userId)
+    if (!user) throw new UserNotFoundError(userId)
+    return user
   }
 
   async update (id: string, dataToUpdate: Partial<CreateGroupData>): Promise<Group> {

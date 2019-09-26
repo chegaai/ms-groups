@@ -13,11 +13,12 @@ export const app = expresso(async (app, config: IAppConfig, environment: string)
 
   const services = container.resolve(Services)
 
-  app.get('/:groupId', routes.find(services.group))
-  app.get('/', routes.listAll(services.group))
-  app.post('/', routes.create(services.group))
-  app.put('/:groupId', routes.update(services.group))
-  app.delete('/:groupId', routes.remove(services.group))
+  app.get('/groups/:groupId', routes.find(services.group))
+  app.get('/groups', routes.listAll(services.group))
+  app.post('/groups', routes.create(services.group))
+  app.put('/groups/:groupId', routes.update(services.group))
+  app.delete('/groups/:groupId', routes.remove(services.group))
+  app.get('/groups/followers/:userId', routes.getFollowers(services.group))
 
   app.use(errors(environment))
 })

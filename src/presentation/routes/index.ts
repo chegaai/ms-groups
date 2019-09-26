@@ -3,6 +3,7 @@ import { factory as update } from './group/update'
 import { factory as remove } from './group/remove'
 import { factory as listAll } from './group/listAll'
 import { factory as find } from './group/find'
+import { factory as getFollowers } from './group/followedBy'
 
 
 export const routes = {
@@ -10,5 +11,6 @@ export const routes = {
   update,
   remove,
   find,
-  listAll
+  listAll,
+  getFollowers
 }

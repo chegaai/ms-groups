@@ -12,7 +12,6 @@ export interface SerializedGroup {
     banner: string
   }
   socialNetworks: SocialNetworkObject[]
-  followers: ObjectId[]
   tags: string[]
   events: ObjectId[]
   createdAt: Date

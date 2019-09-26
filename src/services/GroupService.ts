@@ -10,6 +10,7 @@ import { Group } from '../domain/group/Group'
 import { UserClient } from '../data/repositories/UserClient'
 import { FounderNotFoundError } from '../domain/group/errors/FounderNotFoundError'
 import { OrganizerNotFoundError } from '../domain/group/errors/OrganizerNotFoundError'
+import { UserNotFoundError } from '../domain/group/errors/UserNotFoundError'
 
 @injectable()
 export class GroupService {
@@ -30,6 +31,13 @@ export class GroupService {
     const group = Group.create(new ObjectId(), creationData)
 
     return this.repository.save(group)
+  }
+
+  async searchByFollowedUser (userId: string, page: number = 0, size: number = 10) {
+    const user = await this.userClient.findUserById(userId)
+    if (!user) throw new UserNotFoundError(userId)
+    const communityIds = user.groups.map((groupId: string) => new ObjectId(groupId))
+    return this.repository.findManyById(communityIds, page, size)
   }
 
   private async findOrganizer (organizerId: string) {
@@ -74,7 +82,7 @@ export class GroupService {
     return group
   }
 
-  async listAll (): Promise<PaginatedQueryResult<Group>> {
-    return this.repository.getAll()
+  async listAll (page: number = 0, size: number = 10): Promise<PaginatedQueryResult<Group>> {
+    return this.repository.getAll(page, size)
   }
 }

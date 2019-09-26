@@ -25,7 +25,11 @@ export class GroupRepository extends MongodbRepository<Group, SerializedGroup> {
     return this.existsBy({ name, deletedAt: null })
   }
 
-  async getAll (): Promise<PaginatedQueryResult<Group>> {
-    return this.runPaginatedQuery({ deletedAt: null })
+  async getAll (page: number, size: number): Promise<PaginatedQueryResult<Group>> {
+    return this.runPaginatedQuery({ deletedAt: null }, page, size)
+  }
+
+  async findManyById (communityIds: ObjectId[], page: number, size: number): Promise<PaginatedQueryResult<Group>> {
+    return this.runPaginatedQuery({ _id: { $in: communityIds }, deletedAt: null }, page, size)
   }
 }

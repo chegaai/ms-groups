@@ -31,7 +31,6 @@ export class Group extends BaseEntity {
     group.organizers = data.organizers ? data.organizers.map(organizer => new ObjectId(organizer)) : []
     group.pictures = data.pictures
     group.socialNetworks = data.socialNetworks
-    group.followers = []
     group.tags = []
     group.events = []
 
@@ -48,7 +47,6 @@ export class Group extends BaseEntity {
     this.organizers = dataToUpdate.organizers ? dataToUpdate.organizers.map(organizer => new ObjectId(organizer)) : []
     this.pictures = dataToUpdate.pictures
     this.socialNetworks = dataToUpdate.socialNetworks
-    this.followers = []
     this.tags = []
     this.events = []
     this.updatedAt = new Date()
@@ -66,7 +64,6 @@ export class Group extends BaseEntity {
         banner: this.pictures.banner
       },
       socialNetworks: this.socialNetworks,
-      followers: this.followers,
       tags: this.tags,
       events: this.events,
       createdAt: this.createdAt,

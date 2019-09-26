@@ -13,7 +13,7 @@ export function factory (service: GroupService) {
       }
     }),
     rescue(async (req: Request, res: Response) => {
-      const groups = await service.listAll(req.query.page, req.query.size)
+      const groups = await service.searchByFollowedUser(req.params.userId, req.query.page, req.query.size)
 
       res.status(200)
         .set({

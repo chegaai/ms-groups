@@ -14,7 +14,7 @@ export function factory (service: GroupService) {
       type: 'object',
       properties: {
         name: { type: 'string' },
-        founderId: { type: 'string' },
+        founder: { type: 'string' },
         pictures: {
           type: 'object',
           properties: {
@@ -45,7 +45,7 @@ export function factory (service: GroupService) {
           }
         }
       },
-      required: ['name', 'founderId', 'tags'],
+      required: ['name', 'founder', 'tags'],
       additionalProperties: false
     }),
     rescue(async (req: Request, res: Response) => {

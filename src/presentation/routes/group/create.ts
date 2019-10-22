@@ -5,7 +5,7 @@ import { Request, Response, NextFunction } from 'express'
 import { GroupService } from '../../../services/GroupService'
 import { GroupAlreadyExistsError } from '../../../domain/group/errors/GroupAlreadyExistsError'
 import { FounderNotFoundError } from '../../../domain/group/errors/FounderNotFoundError'
-import { InvalidGroupError } from '../../../domain/group/errors/InvalidGroupError';
+import { InvalidGroupError } from '../../../domain/group/errors/InvalidGroupError'
 import { OrganizerNotFoundError } from '../../../domain/group/errors/OrganizerNotFoundError'
 
 export function factory (service: GroupService) {

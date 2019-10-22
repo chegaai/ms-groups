@@ -3,7 +3,7 @@ import { boom } from '@expresso/errors'
 import { validate } from '@expresso/validator'
 import { Request, Response, NextFunction } from 'express'
 import { GroupService } from '../../../services/GroupService'
-import { GroupNotFoundError } from '../../../domain/group/errors/GroupNotFoundError';
+import { GroupNotFoundError } from '../../../domain/group/errors/GroupNotFoundError'
 
 export function factory (service: GroupService) {
   return [

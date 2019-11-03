@@ -8,7 +8,7 @@ Content-Type: application/json
 
 {
   "name": "lucas",
-  "founder": "5db0a1f2a6fdaf0010485532",
+  "founder": "5dbe22606de0af00112acb07",
   "pictures": {
     "profile": "base64",
     "banner": "base64"
@@ -18,7 +18,12 @@ Content-Type: application/json
     { "name": "GitHub", "link": "https://github.com/khaosdoctor" }
   ],
   "tags": ["javascript","typescript","kubernetes"],
-  "organizers": []
+  "organizers": [],
+  "location": {
+    "city": "São Paulo",
+    "state": "São Paulo",
+    "country": "Brazil"
+  }
 }
 
 ### List groups
@@ -26,42 +31,37 @@ GET http://{{host}}:{{port}}/
 
 ### Delete group
 # @name deleteGroup
-@groupId = 5db0a1f2a6fdaf0010485533
+@groupId = 5dbe3480ca33ddc2f7566691
 
 DELETE http://{{host}}:{{port}}/{{groupId}}
 
 ### Update group
 # @name updateGroup
-@groupId = 5db0a1f2a6fdaf0010485533
+@groupId = 5dbe3480ca33ddc2f7566691
 
 PUT http://{{host}}:{{port}}/{{groupId}}
 Content-Type: application/json
 
 {
   "name": "Lucas Santos",
-  "email": "test@test.com",
-  "picture": "base64",
   "socialNetworks": [
     { "name": "Twitter", "link": "https://twitter.com/_staticvoid" },
     { "name": "GitHub", "link": "https://github.com/khaosdoctor" }
   ],
-  "language": "pt-br",
+  "tags": ["javascript","kubernetes"],
   "location": {
-    "country": "BR",
-    "state": "São Paulo",
     "city": "Santo André"
-  },
-  "tags": ["javascript","kubernetes"]
+  }
 }
 
 ### Get group
 # @name getGroup
-@groupId = 5db0a1f2a6fdaf0010485533
+@groupId = 5dbe3480ca33ddc2f7566691
 
 GET http://{{host}}:{{port}}/{{groupId}}
 
 ### Get user groups
 # @name getGroup
-@userId = 5db0a1f2a6fdaf0010485533
+@userId = 5dbe22606de0af00112acb06
 
 GET http://{{host}}:{{port}}/followers/{{userId}}

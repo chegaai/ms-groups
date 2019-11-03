@@ -4,11 +4,18 @@ import { ObjectId } from 'bson'
 export interface CreateGroupData {
   name: string,
   founder: string | ObjectId
-  pictures: {
+  pictures?: {
     profile: string
     banner: string
   }
   socialNetworks: SocialNetworkObject[]
-  tags: string[]
+  location: LocationObject
+  tags?: string[]
   organizers?: (string | ObjectId)[]
+}
+
+export interface LocationObject {
+  city: string
+  country: string
+  state: string
 }

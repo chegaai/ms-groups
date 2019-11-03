@@ -1,6 +1,7 @@
 import { ObjectId } from 'bson'
 import { SocialNetworkObject } from '../Group'
 import { Nullable } from '../../../utils/Nullable'
+import { LocationObject } from './CreateGroupData'
 
 export interface SerializedGroup {
   _id: ObjectId
@@ -12,8 +13,8 @@ export interface SerializedGroup {
     banner: string
   }
   socialNetworks: SocialNetworkObject[]
+  location: LocationObject
   tags: string[]
-  events: ObjectId[]
   createdAt: Date
   updatedAt: Date
   deletedAt: Nullable<Date>

@@ -38,7 +38,7 @@ export function factory (service: GroupService) {
             type: 'string'
           }
         },
-        taorganizersgs: {
+        organizers: {
           type: 'array',
           items: {
             type: 'string'

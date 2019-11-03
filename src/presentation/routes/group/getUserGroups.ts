@@ -2,6 +2,8 @@ import rescue from 'express-rescue'
 import { Request, Response, NextFunction } from 'express'
 import { GroupService } from '../../../services/GroupService'
 import { validate } from '@expresso/validator'
+import { UserNotFoundError } from '../../../domain/group/errors/UserNotFoundError'
+import boom from 'boom'
 
 export function factory (service: GroupService) {
   return [
@@ -25,6 +27,7 @@ export function factory (service: GroupService) {
         .json(groups.results)
     }),
     (err: any, _req: Request, _res: Response, next: NextFunction) => {
+      if (err instanceof UserNotFoundError) return next(boom.notFound(err.message, { code: 'user_not_found' }))
       next(err)
     }
   ]

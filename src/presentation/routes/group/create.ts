@@ -43,9 +43,19 @@ export function factory (service: GroupService) {
           items: {
             type: 'string'
           }
+        },
+        location: {
+          type: 'object',
+          properties: {
+            city: { type: 'string' },
+            state: { type: 'string' },
+            country: { type: 'string' }
+          },
+          additionalProperties: false,
+          required: ['city', 'state', 'country']
         }
       },
-      required: ['name', 'founder', 'tags'],
+      required: ['name', 'founder', 'tags', 'location'],
       additionalProperties: false
     }),
     rescue(async (req: Request, res: Response) => {

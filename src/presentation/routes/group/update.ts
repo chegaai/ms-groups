@@ -39,6 +39,15 @@ export function factory (service: GroupService) {
           items: {
             type: 'string'
           }
+        },
+        location: {
+          type: 'object',
+          properties: {
+            city: { type: 'string' },
+            state: { type: 'string' },
+            country: { type: 'string' }
+          },
+          additionalProperties: false
         }
       },
       additionalProperties: false

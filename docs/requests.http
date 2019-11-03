@@ -1,0 +1,67 @@
+@host = localhost
+@port = 3000
+
+### Create group
+# @name createGroup
+POST http://{{host}}:{{port}}/
+Content-Type: application/json
+
+{
+  "name": "lucas",
+  "founder": "5db0a1f2a6fdaf0010485532",
+  "pictures": {
+    "profile": "base64",
+    "banner": "base64"
+  },
+  "socialNetworks": [
+    { "name": "Twitter", "link": "https://twitter.com/_staticvoid" },
+    { "name": "GitHub", "link": "https://github.com/khaosdoctor" }
+  ],
+  "tags": ["javascript","typescript","kubernetes"],
+  "organizers": []
+}
+
+### List groups
+GET http://{{host}}:{{port}}/
+
+### Delete group
+# @name deleteGroup
+@groupId = 5db0a1f2a6fdaf0010485533
+
+DELETE http://{{host}}:{{port}}/{{groupId}}
+
+### Update group
+# @name updateGroup
+@groupId = 5db0a1f2a6fdaf0010485533
+
+PUT http://{{host}}:{{port}}/{{groupId}}
+Content-Type: application/json
+
+{
+  "name": "Lucas Santos",
+  "email": "test@test.com",
+  "picture": "base64",
+  "socialNetworks": [
+    { "name": "Twitter", "link": "https://twitter.com/_staticvoid" },
+    { "name": "GitHub", "link": "https://github.com/khaosdoctor" }
+  ],
+  "language": "pt-br",
+  "location": {
+    "country": "BR",
+    "state": "São Paulo",
+    "city": "Santo André"
+  },
+  "tags": ["javascript","kubernetes"]
+}
+
+### Get group
+# @name getGroup
+@groupId = 5db0a1f2a6fdaf0010485533
+
+GET http://{{host}}:{{port}}/{{groupId}}
+
+### Get user groups
+# @name getGroup
+@userId = 5db0a1f2a6fdaf0010485533
+
+GET http://{{host}}:{{port}}/followers/{{userId}}

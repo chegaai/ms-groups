@@ -26,7 +26,10 @@ export const config: IAppConfig = {
       uri: env.get('DATABASE_MONGODB_URI', ''),
       dbName: env.get('DATABASE_MONGODB_DBNAME', 'group'),
       maximumConnectionAttempts: 5,
-      options: {}
+      options: {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+      }
     }
   },
   microServices: {

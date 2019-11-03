@@ -21,7 +21,7 @@ export class UserClient {
     } catch (error) {
       if (!error.response) throw new UnresponsiveServiceError('users')
       if (error.response.status === 404) return null
-      throw new ServiceError(error.response)
+      throw new ServiceError(error.response.statusText)
     }
   }
 }

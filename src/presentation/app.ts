@@ -19,7 +19,7 @@ export const app = expresso(async (app, config: IAppConfig, environment: string)
   app.put('/:groupId', routes.update(services.group))
   app.delete('/:groupId', routes.remove(services.group))
   // @TODO: Move to user service
-  app.get('/followers/:userId', routes.getUserGroups(services.group))
+  app.get('/:userId/groups', routes.getUserGroups(services.group))
 
   app.use(errors(environment))
 })

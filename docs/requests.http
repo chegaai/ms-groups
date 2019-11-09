@@ -61,7 +61,7 @@ Content-Type: application/json
 GET http://{{host}}:{{port}}/{{groupId}}
 
 ### Get user groups
-# @name getGroup
+# @name getUserGroups
 @userId = 5dbe22606de0af00112acb06
 
-GET http://{{host}}:{{port}}/followers/{{userId}}
+GET http://{{host}}:{{port}}/{{userId}}/groups

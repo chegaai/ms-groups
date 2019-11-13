@@ -13,16 +13,14 @@ export function factory (service: GroupService) {
       }
     }),
     rescue(async (req: Request, res: Response) => {
-      const groups = await service.listAll(req.query.page, req.query.size)
+      const searchResult = await service.listAll(req.query.page, req.query.size)
+      const { count, range, results, total } = searchResult
+      const status = total > count ? 206 : 200
 
-      res.status(200)
-        .set({
-          'x-range-from': groups.range.from,
-          'x-range-to': groups.range.to,
-          'x-range-total': groups.total,
-          'x-range-size': groups.count
-        })
-        .json(groups.results)
+      if (status === 206) res.append('x-content-range', `${range.from}-${range.to}/${total}`)
+
+      res.status(status)
+        .json(results.map(result => result.toObject()))
     }),
     (err: any, _req: Request, _res: Response, next: NextFunction) => {
       next(err)

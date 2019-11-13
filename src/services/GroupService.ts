@@ -7,7 +7,8 @@ import { GroupNotFoundError } from '../domain/group/errors/GroupNotFoundError'
 import { GroupAlreadyExistsError } from '../domain/group/errors/GroupAlreadyExistsError'
 import { CreateGroupData } from '../domain/group/structures/CreateGroupData'
 import { Group } from '../domain/group/Group'
-import { UserClient } from '../data/repositories/UserClient'
+import { UserClient } from '../data/clients/UserClient'
+import { BlobStorageClient } from '../data/clients/BlobStorageClient'
 import { FounderNotFoundError } from '../domain/group/errors/FounderNotFoundError'
 import { OrganizerNotFoundError } from '../domain/group/errors/OrganizerNotFoundError'
 import { UserNotFoundError } from '../domain/group/errors/UserNotFoundError'
@@ -15,8 +16,9 @@ import { UserNotFoundError } from '../domain/group/errors/UserNotFoundError'
 @injectable()
 export class GroupService {
   constructor (
+    private readonly userClient: UserClient,
     private readonly repository: GroupRepository,
-    private readonly userClient: UserClient
+    private readonly blobStorageClient: BlobStorageClient
   ) { }
 
   async create (creationData: CreateGroupData): Promise<Group> {
@@ -27,6 +29,10 @@ export class GroupService {
     if (creationData.organizers) {
       await Promise.all(creationData.organizers.map(id => this.findOrganizer(id as string)))
     }
+    if(creationData.pictures && creationData.pictures.banner)
+      creationData.pictures.banner = await this.blobStorageClient.uploadBase64(creationData.pictures.banner)
+    if(creationData.pictures && creationData.pictures.profile)
+      creationData.pictures.banner = await this.blobStorageClient.uploadBase64(creationData.pictures.profile)
 
     const group = Group.create(new ObjectId(), creationData)
 
@@ -60,6 +66,11 @@ export class GroupService {
   async update (id: string, dataToUpdate: Partial<CreateGroupData>): Promise<Group> {
     const currentGroup = await this.repository.findById(id)
     if (!currentGroup) throw new GroupNotFoundError(id)
+
+    if(dataToUpdate.pictures && dataToUpdate.pictures.banner)
+      dataToUpdate.pictures.banner = await this.blobStorageClient.uploadBase64(dataToUpdate.pictures.banner)
+    if(dataToUpdate.pictures && dataToUpdate.pictures.profile)
+      dataToUpdate.pictures.banner = await this.blobStorageClient.uploadBase64(dataToUpdate.pictures.profile)
 
     const newGroup = {
       ...currentGroup,

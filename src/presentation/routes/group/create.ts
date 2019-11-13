@@ -63,7 +63,7 @@ export function factory (service: GroupService) {
       const group = await service.create(groupData)
 
       res.status(201)
-        .json(group)
+        .json(group.toObject())
     }),
     (err: any, _req: Request, _res: Response, next: NextFunction) => {
       if (err instanceof GroupAlreadyExistsError) return next(boom.conflict(err.message, { code: 'group_already_exists' }))

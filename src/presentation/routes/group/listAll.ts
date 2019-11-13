@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express'
 import { GroupService } from '../../../services/GroupService'
 import { validate } from '@expresso/validator'
 
-export function factory (service: GroupService) {
+export default function factory (service: GroupService) {
   return [
     validate.query({
       type: 'object',

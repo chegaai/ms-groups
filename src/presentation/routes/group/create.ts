@@ -8,7 +8,7 @@ import { FounderNotFoundError } from '../../../domain/group/errors/FounderNotFou
 import { InvalidGroupError } from '../../../domain/group/errors/InvalidGroupError'
 import { OrganizerNotFoundError } from '../../../domain/group/errors/OrganizerNotFoundError'
 
-export function factory (service: GroupService) {
+export default function factory (service: GroupService) {
   return [
     validate({
       type: 'object',

@@ -5,7 +5,7 @@ import { validate } from '@expresso/validator'
 import { UserNotFoundError } from '../../../domain/group/errors/UserNotFoundError'
 import boom from 'boom'
 
-export function factory (service: GroupService) {
+export default function factory (service: GroupService) {
   return [
     validate.query({
       type: 'object',

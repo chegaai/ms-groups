@@ -19,8 +19,8 @@ export const app = expresso(async (app, config: IAppConfig, environment: string)
   app.post('/', routes.create(services.group))
   app.put('/:groupId', routes.update(services.group))
   app.delete('/:groupId', routes.remove(services.group))
-  // @TODO: Move to user service
   app.get('/:userId/groups', routes.getUserGroups(services.group))
+  app.get('/organizers/:userId/groups', routes.getGroupsByOrganizerOrFounder(services.group))
 
   app.use(errors(environment))
 })

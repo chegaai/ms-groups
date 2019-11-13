@@ -51,10 +51,10 @@ export class GroupService {
     return this.repository.findManyById(communityIds, page, size)
   }
 
-  private async findOrganizer (organizerId: string) {
-    const organizer = await this.userClient.findUserById(organizerId)
-    if (!organizer) throw new OrganizerNotFoundError(organizerId)
-    return organizer
+  async searchByOrganizerOrFounder (userId: string, page: number = 0, size: number = 10) {
+    const user = await this.findUser(userId, UserTypes.USER)
+    const userObjId = new ObjectId(user.id)
+    return this.repository.search({ $or: [{ founder: userObjId }, { organizers: { $in: [userObjId] } }], deletedAt: null }, page, size)
   }
 
   private async findUser (userId: string, userType: UserTypes) {

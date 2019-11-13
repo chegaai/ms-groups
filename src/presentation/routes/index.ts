@@ -4,6 +4,7 @@ import update from './group/update'
 import remove from './group/remove'
 import listAll from './group/listAll'
 import getUserGroups from './group/getUserGroups'
+import getGroupsByOrganizerOrFounder from './group/getGroupsByOrganizerOrFounder'
 
 
 export const routes = {
@@ -12,5 +13,6 @@ export const routes = {
   remove,
   find,
   listAll,
-  getUserGroups
+  getUserGroups,
+  getGroupsByOrganizerOrFounder
 }

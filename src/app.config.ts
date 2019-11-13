@@ -49,7 +49,7 @@ export const config: IAppConfig = {
     storage: {
       accountName: env.get('AZURE_STORAGE_ACCOUNT_NAME', 'chegaai'),
       accountAccessKey: env.get('AZURE_STORAGE_ACCOUNT_ACCESS_KEY', ''),
-      containerName: env.get('AZURE_STORAGE_CONTAINER_NAME', 'group'),
+      containerName: env.get('AZURE_STORAGE_CONTAINER_NAME', 'groups'),
       timeOut: env.get('AZURE_STORAGE_TIMEOUT', 60000)
     }
   }

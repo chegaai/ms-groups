@@ -1,12 +1,18 @@
 import rescue from 'express-rescue'
 import { boom } from '@expresso/errors'
 import { validate } from '@expresso/validator'
+import { IExpressoRequest } from '@expresso/app'
 import { Request, Response, NextFunction } from 'express'
 import { GroupService } from '../../../services/GroupService'
 import { GroupAlreadyExistsError } from '../../../domain/group/errors/GroupAlreadyExistsError'
 import { FounderNotFoundError } from '../../../domain/group/errors/FounderNotFoundError'
 import { InvalidGroupError } from '../../../domain/group/errors/InvalidGroupError'
 import { OrganizerNotFoundError } from '../../../domain/group/errors/OrganizerNotFoundError'
+import { DomainError } from '../../../domain/domain.error'
+
+class MissingFounderError extends DomainError {
+
+}
 
 export default function factory (service: GroupService) {
   return [
@@ -55,11 +61,14 @@ export default function factory (service: GroupService) {
           required: ['city', 'state', 'country']
         }
       },
-      required: ['name', 'founder', 'tags', 'location'],
+      required: ['name', 'tags', 'location'],
       additionalProperties: false
     }),
-    rescue(async (req: Request, res: Response) => {
-      const groupData = req.body
+    rescue(async (req: IExpressoRequest<any>, res: Response) => {
+      const groupData = { ...req.body, founder: req.onBehalfOf ?? req.body.founder }
+
+      if (!groupData.founder) throw new MissingFounderError('no founder field informed and req.onBehalfOf is empty')
+
       const group = await service.create(groupData)
 
       res.status(201)
@@ -70,6 +79,7 @@ export default function factory (service: GroupService) {
       if (err instanceof InvalidGroupError) return next(boom.badData(err.message, { code: 'invalid_group' }))
       if (err instanceof FounderNotFoundError) return next(boom.badData(err.message, { code: 'founder_not_found' }))
       if (err instanceof OrganizerNotFoundError) return next(boom.badData(err.message, { code: 'organizer_not_found' }))
+      if (err instanceof MissingFounderError) return next(boom.badData(err.message, { code: 'missing_founder' }))
 
       next(err)
     }

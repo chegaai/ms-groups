@@ -3,6 +3,7 @@ import { ObjectId } from 'bson'
 
 export interface CreateGroupData {
   name: string,
+  description: string,
   founder: string | ObjectId
   pictures?: {
     profile: string

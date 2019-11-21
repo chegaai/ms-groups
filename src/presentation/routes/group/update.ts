@@ -11,6 +11,7 @@ export default function factory (service: GroupService) {
       type: 'object',
       properties: {
         name: { type: 'string' },
+        description: { type: 'string' },
         pictures: {
           type: 'object',
           properties: {

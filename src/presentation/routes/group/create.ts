@@ -20,6 +20,7 @@ export default function factory (service: GroupService) {
       type: 'object',
       properties: {
         name: { type: 'string' },
+        description: { type: 'string' },
         founder: { type: 'string' },
         pictures: {
           type: 'object',
@@ -61,7 +62,7 @@ export default function factory (service: GroupService) {
           required: ['city', 'state', 'country']
         }
       },
-      required: ['name', 'tags', 'location'],
+      required: ['name', 'description', 'tags', 'location'],
       additionalProperties: false
     }),
     rescue(async (req: IExpressoRequest<any>, res: Response) => {

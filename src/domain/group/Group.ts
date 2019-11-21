@@ -14,6 +14,7 @@ export class Group extends BaseEntity {
   name: string = ''
   founder: ObjectId = new ObjectId()
   organizers: ObjectId[] = []
+  description: string = ''
   pictures: PictureObject = {
     profile: '',
     banner: ''
@@ -34,6 +35,7 @@ export class Group extends BaseEntity {
     group.founder = new ObjectId(data.founder)
     group.socialNetworks = data.socialNetworks
 
+    if (data.description.trim()) group.description = data.description.trim()
     if (data.organizers) group.organizers = data.organizers.map(organizer => new ObjectId(organizer))
     if (data.pictures) group.pictures = data.pictures
     if (data.tags) group.tags = data.tags
@@ -47,6 +49,7 @@ export class Group extends BaseEntity {
 
   update (dataToUpdate: Partial<CreateGroupData>) {
     this.name = dataToUpdate.name || this.name
+    this.description = dataToUpdate.description?.trim() ?? this.description
     this.founder = dataToUpdate.founder ? new ObjectId(dataToUpdate.founder) : this.founder
     this.organizers = dataToUpdate.organizers ? dataToUpdate.organizers.map(organizer => new ObjectId(organizer)) : this.organizers
     this.pictures = dataToUpdate.pictures ? dataToUpdate.pictures : this.pictures
@@ -61,6 +64,7 @@ export class Group extends BaseEntity {
     return {
       _id: this.id,
       name: this.name,
+      description: this.description,
       founder: this.founder,
       organizers: this.organizers,
       pictures: {

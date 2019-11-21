@@ -6,6 +6,7 @@ import { LocationObject } from './CreateGroupData'
 export interface SerializedGroup {
   _id: ObjectId
   name: string
+  description: string
   founder: ObjectId
   organizers: ObjectId[]
   pictures: {

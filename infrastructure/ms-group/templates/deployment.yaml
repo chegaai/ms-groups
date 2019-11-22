@@ -29,6 +29,14 @@ spec:
               value: {{ default "group" .Values.environment.DATABASE_MONGODB_DBNAME | quote }}
             - name: DATABASE_MONGODB_URI
               value: {{ required "Mongodb URI is required" .Values.environment.DATABASE_MONGODB_URI | quote }}
+            - name: MICROSERVICE_USER_URL
+              value: {{ required "MS User URI is required" .Values.environment.MICROSERVICE_USER_URL | quote }}
+            - name: AZURE_STORAGE_ACCOUNT_NAME
+              value: {{ required "Storage acocunt name is required" .Values.environment.AZURE_STORAGE_ACCOUNT_NAME | quote }}
+            - name: AZURE_STORAGE_ACCOUNT_ACCESS_KEY
+              value: {{ required "Storage access key is required" .Values.environment.AZURE_STORAGE_ACCOUNT_ACCESS_KEY | quote }}
+            - name: AZURE_STORAGE_CONTAINER_NAME
+              value: {{ default "groups" .Values.environment.AZURE_STORAGE_CONTAINER_NAME | quote }}
           ports:
             - name: http
               containerPort: 3000

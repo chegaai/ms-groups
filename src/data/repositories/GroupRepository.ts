@@ -36,4 +36,8 @@ export class GroupRepository extends MongodbRepository<Group, SerializedGroup> {
   async findManyById (communityIds: ObjectId[], page: number, size: number): Promise<PaginatedQueryResult<Group>> {
     return this.runPaginatedQuery({ _id: { $in: communityIds }, deletedAt: null }, page, size)
   }
+
+  async findBySlug (slug: string) {
+    return this.findOneBy({ slug })
+  }
 }

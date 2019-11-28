@@ -14,7 +14,7 @@ export const app = expresso(async (app, config: IAppConfig, environment: string)
 
   const services = container.resolve(Services)
 
-  app.get('/:groupId', routes.find(services.group))
+  app.get('/:group', routes.find(services.group))
   app.get('/', routes.listAll(services.group))
   app.post('/', routes.create(services.group))
   app.put('/:groupId', routes.update(services.group))

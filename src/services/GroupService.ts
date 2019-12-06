@@ -27,6 +27,13 @@ export class GroupService {
     private readonly blobStorageClient: BlobStorageClient
   ) { }
 
+  async uploadBase64(base64: string){
+    const url = await this.blobStorageClient.upload(base64)
+    if(!url)
+      throw Error() //TODO: throw better error handler
+    return url
+  }
+
   async create (creationData: CreateGroupData): Promise<Group> {
     if (await this.repository.existsByName(creationData.name)) throw new GroupAlreadyExistsError(creationData.name)
 
@@ -36,9 +43,9 @@ export class GroupService {
       await Promise.all(creationData.organizers.map(id => this.findUser(id as string, UserTypes.ORGANIZER)))
     }
     if (creationData.pictures && creationData.pictures.banner)
-      creationData.pictures.banner = await this.blobStorageClient.uploadBase64(creationData.pictures.banner)
+      creationData.pictures.banner = await this.uploadBase64(creationData.pictures.banner)
     if (creationData.pictures && creationData.pictures.profile)
-      creationData.pictures.banner = await this.blobStorageClient.uploadBase64(creationData.pictures.profile)
+      creationData.pictures.profile = await this.uploadBase64(creationData.pictures.profile)
 
     const group = Group.create(new ObjectId(), creationData)
 
@@ -79,9 +86,9 @@ export class GroupService {
     if (!currentGroup) throw new GroupNotFoundError(id)
 
     if (dataToUpdate.pictures && dataToUpdate.pictures.banner)
-      dataToUpdate.pictures.banner = await this.blobStorageClient.uploadBase64(dataToUpdate.pictures.banner)
+      dataToUpdate.pictures.banner = await this.uploadBase64(dataToUpdate.pictures.banner)
     if (dataToUpdate.pictures && dataToUpdate.pictures.profile)
-      dataToUpdate.pictures.banner = await this.blobStorageClient.uploadBase64(dataToUpdate.pictures.profile)
+      dataToUpdate.pictures.banner = await this.uploadBase64(dataToUpdate.pictures.profile)
 
     const newGroup = {
       ...currentGroup,

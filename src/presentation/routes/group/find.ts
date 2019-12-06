@@ -7,8 +7,8 @@ import { GroupNotFoundError } from '../../../domain/group/errors/GroupNotFoundEr
 export default function factory (service: GroupService) {
   return [
     rescue(async (req: Request, res: Response) => {
-      const groupId = req.params.groupId
-      const group = await service.find(groupId)
+      const groupIdOrSlug = req.params.group
+      const group = await service.find(groupIdOrSlug)
 
       res.status(200)
         .json(group.toObject())

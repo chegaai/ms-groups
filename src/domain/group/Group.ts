@@ -1,17 +1,17 @@
 import { ObjectId } from 'bson'
 import { BaseEntity, BaseEntityData } from '../BaseEntity'
 import { CreateGroupData, LocationObject } from './structures/CreateGroupData'
-
+import { slugify } from '../../utils/slugify'
 export type PictureObject = {
   profile: string
   banner: string
 }
-
 export type SocialNetworkObject = { name: string, link: string }
 
 export class Group extends BaseEntity {
   id: ObjectId = new ObjectId()
   name: string = ''
+  slug: string = ''
   founder: ObjectId = new ObjectId()
   organizers: ObjectId[] = []
   description: string = ''
@@ -32,6 +32,7 @@ export class Group extends BaseEntity {
     const group = new Group()
     group.id = id
     group.name = data.name
+    group.slug = slugify(data.name)
     group.founder = new ObjectId(data.founder)
     group.socialNetworks = data.socialNetworks
 
@@ -49,7 +50,8 @@ export class Group extends BaseEntity {
 
   update (dataToUpdate: Partial<CreateGroupData>) {
     this.name = dataToUpdate.name || this.name
-    this.description = dataToUpdate.description?.trim() ?? this.description
+    this.slug = slugify(this.name) || this.slug
+    this.description = dataToUpdate.description ? dataToUpdate.description.trim() : this.description
     this.founder = dataToUpdate.founder ? new ObjectId(dataToUpdate.founder) : this.founder
     this.organizers = dataToUpdate.organizers ? dataToUpdate.organizers.map(organizer => new ObjectId(organizer)) : this.organizers
     this.pictures = dataToUpdate.pictures ? dataToUpdate.pictures : this.pictures
@@ -64,6 +66,7 @@ export class Group extends BaseEntity {
     return {
       _id: this.id,
       name: this.name,
+      slug: this.slug,
       description: this.description,
       founder: this.founder,
       organizers: this.organizers,

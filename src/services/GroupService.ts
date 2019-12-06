@@ -109,10 +109,12 @@ export class GroupService {
     await this.repository.save(group)
   }
 
-  async find (id: string): Promise<Group> {
-    const group = await this.repository.findById(id)
+  async find (idOrSlug: string): Promise<Group> {
+    const group = ObjectId.isValid(idOrSlug)
+      ? await this.repository.findById(idOrSlug)
+      : await this.repository.findBySlug(idOrSlug)
 
-    if (!group) throw new GroupNotFoundError(id)
+    if (!group) throw new GroupNotFoundError(idOrSlug)
     return group
   }
 

@@ -1,5 +1,5 @@
 {
-  "name": "ms-group",
+  "name": "ms-groups",
   "version": "1.1.1",
   "description": "Communities microservice",
   "main": "dist/index.js",
@@ -17,7 +17,7 @@
     "start:debug": "tsc && concurrently -s all \"tsc -w\" \"DEBUG=expresso:* nodemon dist/index.js\""
   },
   "contributors": [
-    "Lucas Santos <lucas@nindoo.ai>"
+    "Lucas Santos <lucas@chega.ai>"
   ],
   "license": "UNLICENSED",
   "dependencies": {

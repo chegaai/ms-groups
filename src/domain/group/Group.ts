@@ -64,7 +64,7 @@ export class Group extends BaseEntity {
 
   toObject () {
     return {
-      _id: this.id,
+      id: this.id,
       name: this.name,
       slug: this.slug,
       description: this.description,

@@ -12,6 +12,7 @@ import { GroupNotFoundError } from '../domain/group/errors/GroupNotFoundError'
 import { FounderNotFoundError } from '../domain/group/errors/FounderNotFoundError'
 import { OrganizerNotFoundError } from '../domain/group/errors/OrganizerNotFoundError'
 import { GroupAlreadyExistsError } from '../domain/group/errors/GroupAlreadyExistsError'
+import { InvalidDeleteError } from '../domain/group/errors/InvalidDeleteError'
 
 enum UserTypes {
   USER,
@@ -27,9 +28,9 @@ export class GroupService {
     private readonly blobStorageClient: BlobStorageClient
   ) { }
 
-  async uploadBase64(base64: string){
+  async uploadBase64 (base64: string) {
     const url = await this.blobStorageClient.upload(base64)
-    if(!url)
+    if (!url)
       throw Error() //TODO: throw better error handler
     return url
   }
@@ -100,12 +101,13 @@ export class GroupService {
     return this.repository.save(currentGroup)
   }
 
-  async delete (id: string): Promise<void> {
+  async delete (id: string, userId: string): Promise<void> {
     const group = await this.repository.findById(id)
     if (!group) return
 
-    group.delete()
+    if (!group.founder.equals(userId)) throw new InvalidDeleteError()
 
+    group.delete()
     await this.repository.save(group)
   }
 

@@ -10,7 +10,7 @@ export interface IAppConfig extends IExpressoConfigOptions {
   },
   server?: IServerConfig['server'],
   microServices: {
-    user: {
+    profile: {
       url: string
     }
   },
@@ -41,8 +41,8 @@ export const config: IAppConfig = {
     }
   },
   microServices: {
-    user: {
-      url: env.get('MICROSERVICE_USER_URL', '')
+    profile: {
+      url: env.get('MICROSERVICE_PROFILE_URL', '')
     }
   },
   azure: {

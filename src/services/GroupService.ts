@@ -2,7 +2,7 @@
 import { ObjectId } from 'bson'
 import { injectable } from 'tsyringe'
 import { Group } from '../domain/group/Group'
-import { UserClient } from '../data/clients/UserClient'
+import { ProfileClient } from '../data/clients/ProfileClient'
 import { PaginatedQueryResult } from '@nindoo/mongodb-data-layer'
 import { BlobStorageClient } from '../data/clients/BlobStorageClient'
 import { GroupRepository } from '../data/repositories/GroupRepository'
@@ -23,7 +23,7 @@ enum UserTypes {
 @injectable()
 export class GroupService {
   constructor (
-    private readonly userClient: UserClient,
+    private readonly userClient: ProfileClient,
     private readonly repository: GroupRepository,
     private readonly blobStorageClient: BlobStorageClient
   ) { }
@@ -55,6 +55,7 @@ export class GroupService {
 
   async searchByFollowedUser (userId: string, page: number = 0, size: number = 10) {
     const user = await this.findUser(userId, UserTypes.USER)
+
     const communityIds = user.groups.map((groupId: string) => new ObjectId(groupId))
     return this.repository.findManyById(communityIds, page, size)
   }

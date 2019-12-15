@@ -10,11 +10,11 @@ export interface IAppConfig extends IExpressoConfigOptions {
   },
   server?: IServerConfig['server'],
   microServices: {
-    user: {
+    profile: {
       url: string
     }
   },
-  azure:{
+  azure: {
     storage: {
       accountName: string,
       accountAccessKey: string,
@@ -41,11 +41,11 @@ export const config: IAppConfig = {
     }
   },
   microServices: {
-    user: {
-      url: env.get('MICROSERVICE_USER_URL', '')
+    profile: {
+      url: env.get('MICROSERVICE_PROFILE_URL', '')
     }
   },
-  azure:{
+  azure: {
     storage: {
       accountName: env.get('AZURE_STORAGE_ACCOUNT_NAME', 'chegaai'),
       accountAccessKey: env.get('AZURE_STORAGE_ACCOUNT_ACCESS_KEY', ''),

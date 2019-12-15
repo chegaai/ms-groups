@@ -21,7 +21,6 @@ export default function factory (service: GroupService) {
       properties: {
         name: { type: 'string' },
         description: { type: 'string' },
-        founder: { type: 'string' },
         pictures: {
           type: 'object',
           properties: {
@@ -66,9 +65,7 @@ export default function factory (service: GroupService) {
       additionalProperties: false
     }),
     rescue(async (req: IExpressoRequest<any>, res: Response) => {
-      const groupData = { ...req.body, founder: req.onBehalfOf ?? req.body.founder }
-
-      if (!groupData.founder) throw new MissingFounderError('no founder field informed and req.onBehalfOf is empty')
+      const groupData = { ...req.body, founder: req.onBehalfOf }
 
       const group = await service.create(groupData)
 

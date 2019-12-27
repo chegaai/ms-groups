@@ -27,38 +27,43 @@ export class GroupService {
     private readonly blobStorageClient: BlobStorageClient
   ) { }
 
-  async uploadBase64(base64: string){
+  async uploadBase64 (base64: string) {
     const url = await this.blobStorageClient.upload(base64)
-    if(!url)
-      throw Error() //TODO: throw better error handler
+    if (!url) {
+      throw Error() // TODO: throw better error handler
+    }
     return url
   }
 
   async create (creationData: CreateGroupData): Promise<Group> {
-    if (await this.repository.existsByName(creationData.name)) throw new GroupAlreadyExistsError(creationData.name)
+    if (await this.repository.existsByName(creationData.name)) {
+      throw new GroupAlreadyExistsError(creationData.name)
+    }
 
     await this.findUser(creationData.founder as string, UserTypes.FOUNDER)
 
     if (creationData.organizers) {
-      await Promise.all(creationData.organizers.map(id => this.findUser(id as string, UserTypes.ORGANIZER)))
+      await Promise.all(creationData.organizers.map(async (id) => this.findUser(id as string, UserTypes.ORGANIZER)))
     }
-    if (creationData.pictures && creationData.pictures.banner)
+    if (creationData.pictures && creationData.pictures.banner) {
       creationData.pictures.banner = await this.uploadBase64(creationData.pictures.banner)
-    if (creationData.pictures && creationData.pictures.profile)
+    }
+    if (creationData.pictures && creationData.pictures.profile) {
       creationData.pictures.profile = await this.uploadBase64(creationData.pictures.profile)
+    }
 
     const group = Group.create(new ObjectId(), creationData)
 
     return this.repository.save(group)
   }
 
-  async searchByFollowedUser (userId: string, page: number = 0, size: number = 10) {
+  async searchByFollowedUser (userId: string, page = 0, size = 10) {
     const user = await this.findUser(userId, UserTypes.USER)
     const communityIds = user.groups.map((groupId: string) => new ObjectId(groupId))
     return this.repository.findManyById(communityIds, page, size)
   }
 
-  async searchByOrganizerOrFounder (userId: string, page: number = 0, size: number = 10) {
+  async searchByOrganizerOrFounder (userId: string, page = 0, size = 10) {
     const user = await this.findUser(userId, UserTypes.USER)
     const userObjId = new ObjectId(user.id)
     return this.repository.search({ $or: [{ founder: userObjId }, { organizers: { $in: [userObjId] } }], deletedAt: null }, page, size)
@@ -83,12 +88,16 @@ export class GroupService {
 
   async update (id: string, dataToUpdate: Partial<CreateGroupData>): Promise<Group> {
     const currentGroup = await this.repository.findById(id)
-    if (!currentGroup) throw new GroupNotFoundError(id)
+    if (!currentGroup) {
+      throw new GroupNotFoundError(id)
+    }
 
-    if (dataToUpdate.pictures && dataToUpdate.pictures.banner)
+    if (dataToUpdate.pictures && dataToUpdate.pictures.banner) {
       dataToUpdate.pictures.banner = await this.uploadBase64(dataToUpdate.pictures.banner)
-    if (dataToUpdate.pictures && dataToUpdate.pictures.profile)
+    }
+    if (dataToUpdate.pictures && dataToUpdate.pictures.profile) {
       dataToUpdate.pictures.banner = await this.uploadBase64(dataToUpdate.pictures.profile)
+    }
 
     const newGroup = {
       ...currentGroup,
@@ -118,7 +127,7 @@ export class GroupService {
     return group
   }
 
-  async listAll (page: number = 0, size: number = 10): Promise<PaginatedQueryResult<Group>> {
+  async listAll (page = 0, size = 10): Promise<PaginatedQueryResult<Group>> {
     return this.repository.getAll(page, size)
   }
 }

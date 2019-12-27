@@ -1,17 +1,16 @@
 import { inject, injectable } from 'tsyringe'
-import { IAppConfig } from '../../app.config'
-import axios, { AxiosInstance } from 'axios'
 import { ObjectId } from 'bson'
 import { UnresponsiveServiceError } from '../errors/UnresponsiveServiceError'
 import { ServiceError } from '../errors/ServiceError'
+import { AxiosInstance } from 'axios'
 
 @injectable()
 export class UserClient {
 
   private readonly client: AxiosInstance
 
-  constructor (@inject('UserServiceConnection') connectionData: IAppConfig['microServices']['user']) {
-    this.client = axios.create({ baseURL: connectionData.url })
+  constructor (@inject('UserAxiosInstance') axios: AxiosInstance) {
+    this.client = axios
   }
 
   async findUserById (id: ObjectId | string) {

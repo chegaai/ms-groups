@@ -35,7 +35,7 @@ export class Group extends BaseEntity {
     group.slug = slugify(data.name)
     group.founder = new ObjectId(data.founder)
     group.socialNetworks = data.socialNetworks
-
+    
     if (data.description.trim()) group.description = data.description.trim()
     if (data.organizers) group.organizers = data.organizers.map(organizer => new ObjectId(organizer))
     if (data.pictures) group.pictures = data.pictures
@@ -74,6 +74,7 @@ export class Group extends BaseEntity {
         profile: this.pictures.profile,
         banner: this.pictures.banner
       },
+      followers: this.followers,
       socialNetworks: this.socialNetworks,
       tags: this.tags,
       location: this.location,

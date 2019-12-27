@@ -1,7 +1,11 @@
 import { app } from './app'
-import { config, IAppConfig } from '../app.config'
-import * as server from '@expresso/server'
+import server from '@expresso/server'
+import { IAppConfig } from '../app.config'
 
-export function start () {
-  return server.start<IAppConfig>(app, config)
+export async function start (config: IAppConfig) {
+  return server.start(app, config)
+}
+
+export default {
+  start
 }

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
+import axios from 'axios'
 import { routes } from './routes'
 import { container } from 'tsyringe'
 import expresso from '@expresso/app'
@@ -8,9 +10,12 @@ import { createConnection } from '@nindoo/mongodb-data-layer'
 
 export const app = expresso(async (app, config: IAppConfig, environment: string) => {
   const mongodbConnection = await createConnection(config.database.mongodb)
+
   container.register('MongodbConnection', { useValue: mongodbConnection })
-  container.register('UserServiceConnection', { useValue: config.microServices.user })
   container.register('BlobStorageConfig', { useValue: config.azure.storage })
+
+  const axiosConfig = { baseURL: config.microServices.user.url }
+  container.register('UserAxiosInstance', { useValue: axios.create(axiosConfig) })
 
   const services = container.resolve(Services)
 
@@ -23,4 +28,8 @@ export const app = expresso(async (app, config: IAppConfig, environment: string)
   app.get('/organizers/:userId/groups', routes.getGroupsByOrganizerOrFounder(services.group))
 
   app.use(errors(environment))
+
+  return app
 })
+
+export default { factory: app }

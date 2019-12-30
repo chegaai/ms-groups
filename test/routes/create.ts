@@ -20,7 +20,7 @@ const options: IAppConfig = {
   ...config,
   microServices: {
     user: {
-      url: 'http://ms-groups.mock'
+      url: 'http://ms-user.mock'
     }
   },
 }
@@ -58,18 +58,26 @@ describe('POST /', () => {
     })
   })
 
-  // describe('when group do not exists yet', () => {
-  //   let response: AxiosResponse
+  describe('when group do not exists yet', () => {
+    let response: AxiosResponse
+    let userScope: nock.Scope
 
-  //   before(async () => {
-  //     response = await api.post('/', { ...createGroupData })
-  //   })
+    before(async () => {
+      userScope = nock(options.microServices.user.url)
+        .get(`/${createGroupData.founder.toHexString()}`)
+        .reply(200, { _id: '5ddbe2b325f79200107a080e' })
+        
+      response = await api.post('/', createGroupData)
+    })
 
-  //   it('returns a 200 status code', () => {
-  //     console.log(response)
-  //     expect(response.status).to.be.equal(200)
-  //   })
-  // })
+    it('calls ms-user to validate the given user IDs', () => {
+      expect(userScope.isDone()).to.be.true
+    })
+
+    it('returns a 201 status code', () => {
+      expect(response.status).to.be.equal(201)
+    })
+  })
 
 
   describe('when name already exists', () => {

@@ -13,9 +13,9 @@ export const app = expresso(async (app, config: IAppConfig, environment: string)
 
   container.register('MongodbConnection', { useValue: mongodbConnection })
   container.register('BlobStorageConfig', { useValue: config.azure.storage })
-
-  const axiosConfig = { baseURL: config.microServices.user.url }
-  container.register('UserAxiosInstance', { useValue: axios.create(axiosConfig) })
+  container.register('UserAxiosInstance', { 
+    useValue: axios.create({ baseURL: config.microServices.user.url })
+   })
 
   const services = container.resolve(Services)
 

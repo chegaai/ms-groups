@@ -3,6 +3,7 @@ import env from 'sugar-env'
 import { expect } from 'chai'
 import axiosist from 'axiosist'
 // import { ObjectId } from 'mongodb'
+import { isGroup } from '../utils/is-group'
 import sloth from '@irontitan/sloth'
 import app from '../../src/presentation/app'
 import { States, states } from '../utils/db/states'
@@ -61,11 +62,13 @@ describe('POST /', () => {
   describe('when group do not exists yet', () => {
     let response: AxiosResponse
     let userScope: nock.Scope
-
+    const urlRegex = new RegExp(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi);
+    
     before(async () => {
+      const founderId = createGroupData.founder.toHexString()
       userScope = nock(options.microServices.user.url)
-        .get(`/${createGroupData.founder.toHexString()}`)
-        .reply(200, { _id: '5ddbe2b325f79200107a080e' })
+        .get(`/${founderId}`)
+        .reply(200, { _id: founderId })
         
       response = await api.post('/', createGroupData)
     })
@@ -76,6 +79,16 @@ describe('POST /', () => {
 
     it('returns a 201 status code', () => {
       expect(response.status).to.be.equal(201)
+    })
+
+    it('returns a valid group', () => {
+      isGroup(response.data)
+    })
+
+    it('returns picture as a azure URI', () => {
+      expect(response.data.pictures).to.exist
+      expect(response.data.pictures.profile.match(urlRegex).length > 0).to.be.true
+      expect(response.data.pictures.banner.match(urlRegex).length > 0).to.be.true
     })
   })
 

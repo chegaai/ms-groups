@@ -1,5 +1,4 @@
-// import nock from 'nock'
-
+import nock from 'nock'
 import env from 'sugar-env'
 import { expect } from 'chai'
 import axiosist from 'axiosist'
@@ -72,7 +71,7 @@ describe('POST /', () => {
   // })
 
 
-  describe('when id already exists', () => {
+  describe('when name already exists', () => {
     let response: AxiosResponse
 
     before(async () => {
@@ -88,4 +87,29 @@ describe('POST /', () => {
       expect(response.data.error?.code).to.be.equal('group_already_exists')
     })
   })
+
+  describe('when founder do not exists', () => {
+    let response: AxiosResponse
+    let userScope: nock.Scope
+
+    before(async () => {
+      userScope = nock(options.microServices.user.url)
+        .get(`/${createGroupData.founder}`)
+        .reply(404)
+      response = await api.post('/', { ...createGroupData })
+    })
+
+    it('calls ms-user to validate the given user IDs', () => {
+      expect(userScope.isDone()).to.be.true
+    })
+
+    it('returns a 404 status code', () => {
+      expect(response.status).to.be.equal(404)
+    })
+
+    it('returns a `founder_not_found` error code', () => {
+      expect(response.data.error?.code).to.be.equal('founder_not_found')
+    })
+  })
+
 })

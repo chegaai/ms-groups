@@ -29,6 +29,7 @@
     "axios": "^0.19.0",
     "azure-blob-storage-client": "0.0.8",
     "express-rescue": "^1.1.22",
+    "lodash.omit": "^4.5.0",
     "reflect-metadata": "^0.1.13",
     "sugar-env": "^1.5.7",
     "tsyringe": "^4.0.1"

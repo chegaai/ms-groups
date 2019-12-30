@@ -11,6 +11,7 @@ import { createGroupData } from '../mocks/groups'
 // import AxiosMockAdapter from 'axios-mock-adapter'
 import { config, IAppConfig } from '../../src/app.config'
 import { SlothDatabase } from '@irontitan/sloth/dist/modules/database'
+import omit from 'lodash.omit'
 // import { SerializedGroup as Group } from '../../src/domain/group/structures/SerializedGroup'
 // import { COLLECTION as GROUP_COLLECTION } from '../../src/data/repositories/GroupRepository'
 // import { isGroup } from '../utils/is-group'
@@ -76,7 +77,7 @@ describe('POST /', () => {
 
     before(async () => {
       await database.setState('validEmptyGroupExists')
-      response = await api.post('/', { ...createGroupData })
+      response = await api.post('/', createGroupData)
     })
 
     it('returns a 409 status code', () => {
@@ -96,19 +97,38 @@ describe('POST /', () => {
       userScope = nock(options.microServices.user.url)
         .get(`/${createGroupData.founder}`)
         .reply(404)
-      response = await api.post('/', { ...createGroupData })
+      response = await api.post('/', createGroupData)
     })
 
     it('calls ms-user to validate the given user IDs', () => {
       expect(userScope.isDone()).to.be.true
     })
 
-    it('returns a 404 status code', () => {
-      expect(response.status).to.be.equal(404)
+    it('returns a 422 status code', () => {
+      expect(response.status).to.be.equal(422)
     })
 
     it('returns a `founder_not_found` error code', () => {
       expect(response.data.error?.code).to.be.equal('founder_not_found')
+    })
+  })
+
+  describe('when founder is missing', () => {
+    let response: AxiosResponse
+
+    before(async () => {
+      const payload = omit(createGroupData, [
+        'founder'
+      ])
+      response = await api.post('/', payload)
+    })
+
+    it('returns a 422 status code', () => {
+      expect(response.status).to.be.equal(422)
+    })
+
+    it('returns a `missing_founder` error code', () => {
+      expect(response.data.error?.code).to.be.equal('missing_founder')
     })
   })
 

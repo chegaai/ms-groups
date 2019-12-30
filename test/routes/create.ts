@@ -15,8 +15,8 @@ import { SlothDatabase } from '@irontitan/sloth/dist/modules/database'
 const options: IAppConfig = {
   ...config,
   microServices: {
-    user: {
-      url: 'http://ms-user.mock'
+    profile: {
+      url: 'http://ms-profile.mock'
     }
   },
 }
@@ -56,12 +56,12 @@ describe('POST /', () => {
 
   describe('when group do not exists yet', () => {
     let response: AxiosResponse
-    let userScope: nock.Scope
+    let profileScope: nock.Scope
     const urlRegex = new RegExp(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi);
     
     before(async () => {
       const founderId = createGroupData.founder.toHexString()
-      userScope = nock(options.microServices.user.url)
+      profileScope = nock(options.microServices.profile.url)
         .get(`/${founderId}`)
         .reply(200, { _id: founderId })
         
@@ -69,7 +69,7 @@ describe('POST /', () => {
     })
 
     it('calls ms-user to validate the given user IDs', () => {
-      expect(userScope.isDone()).to.be.true
+      expect(profileScope.isDone()).to.be.true
     })
 
     it('returns a 201 status code', () => {
@@ -107,17 +107,17 @@ describe('POST /', () => {
 
   describe('when founder do not exists', () => {
     let response: AxiosResponse
-    let userScope: nock.Scope
+    let profileScope: nock.Scope
 
     before(async () => {
-      userScope = nock(options.microServices.user.url)
+      profileScope = nock(options.microServices.profile.url)
         .get(`/${createGroupData.founder}`)
         .reply(404)
       response = await api.post('/', createGroupData)
     })
 
     it('calls ms-user to validate the given user IDs', () => {
-      expect(userScope.isDone()).to.be.true
+      expect(profileScope.isDone()).to.be.true
     })
 
     it('returns a 422 status code', () => {

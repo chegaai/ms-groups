@@ -2,7 +2,7 @@
 import { ObjectId } from 'bson'
 import { injectable } from 'tsyringe'
 import { Group } from '../domain/group/Group'
-import { UserClient } from '../data/clients/UserClient'
+import { ProfileClient } from '../data/clients/ProfileClient'
 import { PaginatedQueryResult } from '@nindoo/mongodb-data-layer'
 import { BlobStorageClient } from '../data/clients/BlobStorageClient'
 import { GroupRepository } from '../data/repositories/GroupRepository'
@@ -12,6 +12,7 @@ import { GroupNotFoundError } from '../domain/group/errors/GroupNotFoundError'
 import { FounderNotFoundError } from '../domain/group/errors/FounderNotFoundError'
 import { OrganizerNotFoundError } from '../domain/group/errors/OrganizerNotFoundError'
 import { GroupAlreadyExistsError } from '../domain/group/errors/GroupAlreadyExistsError'
+import { InvalidDeleteError } from '../domain/group/errors/InvalidDeleteError'
 
 enum UserTypes {
   USER,
@@ -22,13 +23,13 @@ enum UserTypes {
 @injectable()
 export class GroupService {
   constructor (
-    private readonly userClient: UserClient,
+    private readonly userClient: ProfileClient,
     private readonly repository: GroupRepository,
     private readonly blobStorageClient: BlobStorageClient
   ) { }
 
   async uploadBase64 (base64: string) {
-    const url = await this.blobStorageClient.upload(base64)
+    const url = await this.blobStorageClient.uploadBase64(base64, 'image/*')
     if (!url) {
       throw Error() // TODO: throw better error handler
     }
@@ -59,6 +60,7 @@ export class GroupService {
 
   async searchByFollowedUser (userId: string, page = 0, size = 10) {
     const user = await this.findUser(userId, UserTypes.USER)
+
     const communityIds = user.groups.map((groupId: string) => new ObjectId(groupId))
     return this.repository.findManyById(communityIds, page, size)
   }
@@ -109,12 +111,13 @@ export class GroupService {
     return this.repository.save(currentGroup)
   }
 
-  async delete (id: string): Promise<void> {
+  async delete (id: string, userId: string): Promise<void> {
     const group = await this.repository.findById(id)
     if (!group) return
 
-    group.delete()
+    if (!group.founder.equals(userId)) throw new InvalidDeleteError()
 
+    group.delete()
     await this.repository.save(group)
   }
 

@@ -5,11 +5,11 @@ import { ServiceError } from '../errors/ServiceError'
 import { AxiosInstance } from 'axios'
 
 @injectable()
-export class UserClient {
+export class ProfileClient {
 
   private readonly client: AxiosInstance
 
-  constructor (@inject('UserAxiosInstance') axios: AxiosInstance) {
+  constructor (@inject('ProfileAxiosInstance') axios: AxiosInstance) {
     this.client = axios
   }
 
@@ -18,7 +18,7 @@ export class UserClient {
       const { data } = await this.client.get(`/${new ObjectId(id).toHexString()}`)
       return data
     } catch (error) {
-      if (!error.response) throw new UnresponsiveServiceError('users')
+      if (!error.response) throw new UnresponsiveServiceError('profiles')
       if (error.response.status === 404) return null
       throw new ServiceError(error.response.statusText)
     }

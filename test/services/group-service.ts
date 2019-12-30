@@ -4,8 +4,8 @@ import { validGroup, VALID_GROUP_OBJECT_ID } from '../mocks/groups'
 import sinon, { SinonStubbedInstance } from 'sinon'
 import { GroupRepository } from '../../src/data/repositories/GroupRepository'
 import { GroupService } from '../../src/services/GroupService'
-import { factory as userClientFactory } from '../mocks/userClient'
-import { UserClient } from '../../src/data/clients/UserClient'
+import { factory as profileClientFactory } from '../mocks/profileClient'
+import { ProfileClient } from '../../src/data/clients/ProfileClient'
 import { BlobStorageClient } from '../../src/data/clients/BlobStorageClient'
 import { config } from '../../src/app.config'
 import { GroupNotFoundError } from '../../src/domain/group/errors/GroupNotFoundError'
@@ -17,7 +17,7 @@ describe('group service', () => {
   before(() => {
     mockRepository = sinon.createStubInstance(GroupRepository)
     service = new GroupService(
-      new UserClient(userClientFactory() as any),
+      new ProfileClient(profileClientFactory() as any),
       mockRepository as any,
       new BlobStorageClient(config.azure.storage))
   })

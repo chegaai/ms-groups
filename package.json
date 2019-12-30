@@ -1,6 +1,6 @@
 {
   "name": "ms-groups",
-  "version": "1.1.1",
+  "version": "2.0.1",
   "description": "Communities microservice",
   "main": "dist/index.js",
   "scripts": {
@@ -27,11 +27,11 @@
     "@expresso/validator": "^1.0.5",
     "@nindoo/mongodb-data-layer": "^2.1.0",
     "axios": "^0.19.0",
-    "azure-blob-storage-client": "0.0.8",
     "express-rescue": "^1.1.22",
     "lodash.omit": "^4.5.0",
+    "azure-blob-storage-client": "1.0.0",
     "reflect-metadata": "^0.1.13",
-    "sugar-env": "^1.5.7",
+    "sugar-env": "^1.5.9",
     "tsyringe": "^4.0.1"
   },
   "devDependencies": {
@@ -44,7 +44,6 @@
     "@types/lodash.clonedeep": "^4.5.6",
     "@types/lodash.omit": "^4.5.6",
     "@types/mocha": "^5.2.7",
-    "@types/node": "^12.12.14",
     "@types/puppeteer": "^2.0.0",
     "@types/sinon": "^7.5.1",
     "@types/wtfnode": "^0.7.0",
@@ -54,13 +53,14 @@
     "axiosist": "^0.7.0",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
-    "concurrently": "^4.1.2",
     "eslint": "^6.7.2",
     "eslint-config-standard-with-typescript": "^11.0.1",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-node": "^10.0.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
+    "@types/node": "^12.12.22",
+    "concurrently": "^5.0.2",
     "husky": "^3.1.0",
     "mocha": "^6.2.2",
     "mongo-mock": "^3.8.1",
@@ -71,9 +71,9 @@
     "tslint": "^5.20.1",
     "tslint-config-standard": "^9.0.0",
     "tslint-eslint-rules": "^5.4.0",
-    "typescript": "^3.7.2",
     "why-is-node-running": "^2.1.0",
-    "wtfnode": "^0.8.0"
+    "wtfnode": "^0.8.0",
+    "typescript": "^3.7.4"
   },
   "husky": {
     "hooks": {

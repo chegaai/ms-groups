@@ -14,7 +14,8 @@ export class GroupRepository extends MongodbRepository<Group, SerializedGroup> {
   }
 
   serialize (entity: Group) {
-    return entity.toObject()
+    const { id, ...group } = entity.toObject()
+    return { _id: id, ...group }
   }
 
   deserialize (data: SerializedGroup): Group {

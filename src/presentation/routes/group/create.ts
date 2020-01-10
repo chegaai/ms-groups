@@ -59,13 +59,18 @@ export default function factory (service: GroupService) {
           },
           additionalProperties: false,
           required: ['city', 'state', 'country']
-        }
+        },
+        founder: { type: 'string' }
       },
       required: ['name', 'description', 'tags', 'location'],
       additionalProperties: false
     }),
     rescue(async (req: IExpressoRequest<any>, res: Response) => {
-      const groupData = { ...req.body, founder: req.onBehalfOf }
+      if (!req.onBehalfOf && !req.body.founder)
+        throw new MissingFounderError()
+
+      const founder = (req.onBehalfOf) ? req.onBehalfOf : req.body.founder
+      const groupData = { ...req.body, founder }
 
       const group = await service.create(groupData)
 

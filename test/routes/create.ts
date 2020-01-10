@@ -63,7 +63,7 @@ describe('POST /', () => {
       const founderId = createGroupData.founder.toHexString()
       profileScope = nock(options.microServices.profile.url)
         .get(`/${founderId}`)
-        .reply(200, { _id: founderId })
+        .reply(200, { id: founderId })
         
       response = await api.post('/', createGroupData)
     })
@@ -113,6 +113,7 @@ describe('POST /', () => {
       profileScope = nock(options.microServices.profile.url)
         .get(`/${createGroupData.founder}`)
         .reply(404)
+      
       response = await api.post('/', createGroupData)
     })
 

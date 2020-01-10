@@ -1,4 +1,10 @@
 import 'reflect-metadata'
-import { start } from './presentation/server'
+import { config } from './app.config'
+import server from './presentation/server'
 
-start()
+server.start(config)
+      .catch(err => {
+          console.error('----- Fatal error -----')
+          console.error(err)
+          process.exit(1)
+      })

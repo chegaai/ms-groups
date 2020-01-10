@@ -1,6 +1,6 @@
 import { Nullable } from '../utils/Nullable'
 
-export interface BaseEntityData {
+export type BaseEntityData = {
   deletedAt?: Nullable<Date>
   updatedAt?: Date
   createdAt?: Date

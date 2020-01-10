@@ -5,11 +5,12 @@ import { Db } from 'mongodb'
 import { SerializedGroup } from '../../domain/group/structures/SerializedGroup'
 import { Group } from '../../domain/group/Group'
 
+export const COLLECTION = 'groups'
+
 @injectable()
 export class GroupRepository extends MongodbRepository<Group, SerializedGroup> {
-  static collection = 'groups'
   constructor (@inject('MongodbConnection') connection: Db) {
-    super(connection.collection(GroupRepository.collection))
+    super(connection.collection(COLLECTION))
   }
 
   serialize (entity: Group) {

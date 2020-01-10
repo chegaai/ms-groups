@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 
 export function isGroup (data: unknown) {
-  expect(data).to.have.property('_id')
+  expect(data).to.have.property('id')
   expect(data).to.have.property('name')
   expect(data).to.have.property('description')
   expect(data).to.have.property('founder')

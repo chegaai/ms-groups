@@ -6,7 +6,6 @@ import { Request, Response, NextFunction } from 'express'
 import { GroupService } from '../../../services/GroupService'
 import { GroupAlreadyExistsError } from '../../../domain/group/errors/GroupAlreadyExistsError'
 import { FounderNotFoundError } from '../../../domain/group/errors/FounderNotFoundError'
-import { InvalidGroupError } from '../../../domain/group/errors/InvalidGroupError'
 import { OrganizerNotFoundError } from '../../../domain/group/errors/OrganizerNotFoundError'
 import { DomainError } from '../../../domain/domain.error'
 
@@ -79,7 +78,6 @@ export default function factory (service: GroupService) {
     }),
     (err: any, _req: Request, _res: Response, next: NextFunction) => {
       if (err instanceof GroupAlreadyExistsError) return next(boom.conflict(err.message, { code: 'group_already_exists' }))
-      if (err instanceof InvalidGroupError) return next(boom.badData(err.message, { code: 'invalid_group' }))
       if (err instanceof FounderNotFoundError) return next(boom.badData(err.message, { code: 'founder_not_found' }))
       if (err instanceof OrganizerNotFoundError) return next(boom.badData(err.message, { code: 'organizer_not_found' }))
       if (err instanceof MissingFounderError) return next(boom.badData(err.message, { code: 'missing_founder' }))

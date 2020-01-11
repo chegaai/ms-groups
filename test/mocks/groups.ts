@@ -41,5 +41,18 @@ const createGroupData = {
   location: validGroup.location
 }
 
-export { validGroup, createGroupData, VALID_GROUP_OBJECT_ID }
+const updateGroupData = {
+  name: validGroup.name,
+  description: validGroup.description,
+  pictures: {
+    profile:'base64',
+    banner: 'base64'
+  },
+  socialNetworks: validGroup.socialNetworks,
+  tags: validGroup.tags,
+  organizers: [new ObjectId('5e1930713af2d8471df20487'), new ObjectId('5e1930a57acc1c1d2b8c369a')],
+  location: validGroup.location
+}
+
+export { validGroup, createGroupData, VALID_GROUP_OBJECT_ID, updateGroupData }
 

@@ -4,6 +4,7 @@ import { validate } from '@expresso/validator'
 import { Request, Response, NextFunction } from 'express'
 import { GroupService } from '../../../services/GroupService'
 import { GroupNotFoundError } from '../../../domain/group/errors/GroupNotFoundError'
+import { OrganizerNotFoundError } from '../../../domain/group/errors/OrganizerNotFoundError'
 
 export default function factory (service: GroupService) {
   return [
@@ -63,6 +64,7 @@ export default function factory (service: GroupService) {
     }),
     (err: any, _req: Request, _res: Response, next: NextFunction) => {
       if (err instanceof GroupNotFoundError) return next(boom.notFound(err.message, { code: 'group_not_found' }))
+      if (err instanceof OrganizerNotFoundError) return next(boom.badData(err.message, { code: 'organizer_not_found' }))
 
       next(err)
     }

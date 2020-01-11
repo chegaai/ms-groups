@@ -30,6 +30,7 @@ export class GroupService {
 
   async uploadBase64 (base64: string) {
     const url = await this.blobStorageClient.uploadBase64(base64, 'image/*')
+    
     if (!url) {
       throw Error() // TODO: throw better error handler
     }
@@ -46,7 +47,6 @@ export class GroupService {
     if (creationData.organizers) {
       await Promise.all(creationData.organizers.map(async (id) => this.findUser(id as string, UserTypes.ORGANIZER)))
     }
-
     if (creationData.pictures && creationData.pictures.banner) {
       creationData.pictures.banner = await this.uploadBase64(creationData.pictures.banner)
     }

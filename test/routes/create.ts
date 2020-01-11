@@ -95,7 +95,6 @@ describe('POST /', () => {
     })
   })
 
-
   describe('when name already exists', () => {
     let response: AxiosResponse
 

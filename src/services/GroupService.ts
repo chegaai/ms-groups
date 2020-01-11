@@ -42,11 +42,12 @@ export class GroupService {
       throw new GroupAlreadyExistsError(creationData.name)
     }
 
-    await this.findUser(creationData.founder as string, UserTypes.FOUNDER)
+    await this.findProfile(creationData.founder as string, UserTypes.FOUNDER)
 
     if (creationData.organizers) {
-      await Promise.all(creationData.organizers.map(async (id) => this.findUser(id as string, UserTypes.ORGANIZER)))
+      await Promise.all(creationData.organizers.map(async (id) => this.findProfile(id as string, UserTypes.ORGANIZER)))
     }
+
     if (creationData.pictures && creationData.pictures.banner) {
       creationData.pictures.banner = await this.uploadBase64(creationData.pictures.banner)
     }
@@ -61,20 +62,20 @@ export class GroupService {
   }
 
   async searchByFollowedUser (userId: string, page = 0, size = 10) {
-    const user = await this.findUser(userId, UserTypes.USER)
+    const user = await this.findProfile(userId, UserTypes.USER)
 
     const communityIds = user.groups.map((groupId: string) => new ObjectId(groupId))
     return this.repository.findManyById(communityIds, page, size)
   }
 
   async searchByOrganizerOrFounder (userId: string, page = 0, size = 10) {
-    const user = await this.findUser(userId, UserTypes.USER)
+    const user = await this.findProfile(userId, UserTypes.USER)
     const userObjId = new ObjectId(user.id)
     return this.repository.search({ $or: [ { founder: userObjId }, { organizers: { $in: [ userObjId ] } } ], deletedAt: null }, page, size)
   }
 
-  private async findUser (userId: string, userType: UserTypes) {
-    const user = await this.userClient.findUserById(userId)
+  private async findProfile (userId: string, userType: UserTypes) {
+    const user = await this.userClient.findProfileById(userId)
 
     if (!user) {
       switch (userType) {
@@ -96,9 +97,14 @@ export class GroupService {
       throw new GroupNotFoundError(id)
     }
 
+    if (dataToUpdate.organizers) {
+      await Promise.all(dataToUpdate.organizers.map(async (id) => this.findProfile(id as string, UserTypes.ORGANIZER)))
+    }
+
     if (dataToUpdate.pictures && dataToUpdate.pictures.banner) {
       dataToUpdate.pictures.banner = await this.uploadBase64(dataToUpdate.pictures.banner)
     }
+
     if (dataToUpdate.pictures && dataToUpdate.pictures.profile) {
       dataToUpdate.pictures.banner = await this.uploadBase64(dataToUpdate.pictures.profile)
     }
@@ -125,7 +131,6 @@ export class GroupService {
 
   async find (idOrSlug: string): Promise<Group> {
     const group = await this.repository.findByIdOrSlug(idOrSlug)
-
     if (!group) throw new GroupNotFoundError(idOrSlug)
     return group
   }

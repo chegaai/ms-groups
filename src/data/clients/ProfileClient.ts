@@ -13,7 +13,7 @@ export class ProfileClient {
     this.client = axios
   }
 
-  async findUserById (id: ObjectId | string) {
+  async findProfileById (id: ObjectId | string) {
     try {
       const { data } = await this.client.get(`/${new ObjectId(id).toHexString()}`)
       return data

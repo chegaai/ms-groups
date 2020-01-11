@@ -80,7 +80,7 @@ describe('POST /', () => {
       profileScope = nock(options.microServices.profile.url)
         .get(`/${createGroupData.founder}`)
         .reply(404)
-      
+
       response = await api.post('/', createGroupData)
     })
 
@@ -117,11 +117,11 @@ describe('POST /', () => {
   })
 
   describe('when orginzer is not found [NOT IMPLEMENTED]', () => {
- 
+
     before(async () => {
       /* TODO: how to mock the findUser request to get a valid founder
        but dont find a orginizer.*/
-       
+
       // See the src/services/GroupService.ts:46 for more details
     })
 

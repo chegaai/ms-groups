@@ -58,11 +58,11 @@ export default function factory (service: GroupService) {
             country: { type: 'string' }
           },
           additionalProperties: false,
-          required: ['city', 'state', 'country']
+          required: [ 'city', 'state', 'country' ]
         },
         founder: { type: 'string' }
       },
-      required: ['name', 'description', 'tags', 'location'],
+      required: [ 'name', 'description', 'tags', 'location' ],
       additionalProperties: false
     }),
     rescue(async (req: IExpressoRequest<any>, res: Response) => {

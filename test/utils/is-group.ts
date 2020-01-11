@@ -6,7 +6,6 @@ export function isGroup (data: unknown) {
   expect(data).to.have.property('description')
   expect(data).to.have.property('founder')
   expect(data).to.have.property('organizers')
-  expect(data).to.have.property('followers')
   expect(data).to.have.property('slug')
   expect(data).to.have.property('pictures')
   expect(data).to.have.property('socialNetworks')

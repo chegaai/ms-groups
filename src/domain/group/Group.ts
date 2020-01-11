@@ -25,7 +25,6 @@ export class Group extends BaseEntity {
     country: ''
   }
   socialNetworks: SocialNetworkObject[] = []
-  followers: ObjectId[] = []
   tags: string[] = []
 
   static create (id: ObjectId, data: CreateGroupData & BaseEntityData): Group {
@@ -74,7 +73,6 @@ export class Group extends BaseEntity {
         profile: this.pictures.profile,
         banner: this.pictures.banner
       },
-      followers: this.followers,
       socialNetworks: this.socialNetworks,
       tags: this.tags,
       location: this.location,

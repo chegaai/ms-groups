@@ -10,7 +10,6 @@ validGroup.name= 'typescriptbr',
 validGroup.description= 'sadsadsa',
 validGroup.founder = new ObjectId('5ddbe2b325f79200107a080e'),
 validGroup.organizers= [],
-validGroup.followers= [],
 validGroup.slug= 'typescriptbr',
 validGroup.pictures = {
     profile: 'https=//chegaai.blob.core.windows.net/groups/5ddbe5bfe791c25971081cba',

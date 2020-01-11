@@ -50,7 +50,7 @@ export class GroupRepository extends MongodbRepository<Group, SerializedGroup> {
 
     return this.findOneBy({
       $or: [
-        { id: new ObjectId(idOrSlug) },
+        { _id: new ObjectId(idOrSlug) },
         { slug: idOrSlug }
       ]
     })

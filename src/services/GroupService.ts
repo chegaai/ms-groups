@@ -131,7 +131,6 @@ export class GroupService {
 
   async find (idOrSlug: string): Promise<Group> {
     const group = await this.repository.findByIdOrSlug(idOrSlug)
-
     if (!group) throw new GroupNotFoundError(idOrSlug)
     return group
   }

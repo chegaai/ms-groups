@@ -26,7 +26,6 @@ const options: IAppConfig = {
 describe('PUT /', () => {
   let api: AxiosInstance
   let database: SlothDatabase<States>
-  
 
   before(async () =>{
     

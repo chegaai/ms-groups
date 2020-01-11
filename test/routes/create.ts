@@ -58,13 +58,13 @@ describe('POST /', () => {
     let response: AxiosResponse
     let profileScope: nock.Scope
     const urlRegex = new RegExp(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi);
-    
+
     before(async () => {
       const founderId = createGroupData.founder.toHexString()
       profileScope = nock(options.microServices.profile.url)
         .get(`/${founderId}`)
         .reply(200, { id: founderId })
-        
+
       response = await api.post('/', createGroupData)
     })
 
@@ -73,6 +73,7 @@ describe('POST /', () => {
     })
 
     it('returns a 201 status code', () => {
+      console.log(response.data)
       expect(response.status).to.be.equal(201)
     })
 
@@ -113,7 +114,7 @@ describe('POST /', () => {
       profileScope = nock(options.microServices.profile.url)
         .get(`/${createGroupData.founder}`)
         .reply(404)
-      
+
       response = await api.post('/', createGroupData)
     })
 
@@ -150,11 +151,11 @@ describe('POST /', () => {
   })
 
   describe('when orginzer is not found [NOT IMPLEMENTED]', () => {
- 
+
     before(async () => {
       /* TODO: how to mock the findUser request to get a valid founder
        but dont find a orginizer.*/
-       
+
       // See the src/services/GroupService.ts:46 for more details
     })
 

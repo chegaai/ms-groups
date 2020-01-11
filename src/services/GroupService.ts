@@ -43,7 +43,7 @@ export class GroupService {
     }
 
     await this.findUser(creationData.founder as string, UserTypes.FOUNDER)
-   
+
     if (creationData.organizers) {
       await Promise.all(creationData.organizers.map(async (id) => this.findUser(id as string, UserTypes.ORGANIZER)))
     }
@@ -71,7 +71,7 @@ export class GroupService {
   async searchByOrganizerOrFounder (userId: string, page = 0, size = 10) {
     const user = await this.findUser(userId, UserTypes.USER)
     const userObjId = new ObjectId(user.id)
-    return this.repository.search({ $or: [{ founder: userObjId }, { organizers: { $in: [userObjId] } }], deletedAt: null }, page, size)
+    return this.repository.search({ $or: [ { founder: userObjId }, { organizers: { $in: [ userObjId ] } } ], deletedAt: null }, page, size)
   }
 
   private async findUser (userId: string, userType: UserTypes) {

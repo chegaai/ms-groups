@@ -30,7 +30,7 @@ export class GroupService {
 
   async uploadBase64 (base64: string) {
     const url = await this.blobStorageClient.uploadBase64(base64, 'image/*')
-    
+
     if (!url) {
       throw Error() // TODO: throw better error handler
     }

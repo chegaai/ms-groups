@@ -9,7 +9,6 @@ export interface SerializedGroup {
   slug: string
   description: string
   founder: ObjectId
-  followers: ObjectId[]
   organizers: ObjectId[]
   pictures: {
     profile: string

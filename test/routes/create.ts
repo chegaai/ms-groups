@@ -11,6 +11,8 @@ import { States, states } from '../utils/db/states'
 import { AxiosInstance, AxiosResponse } from 'axios'
 import { config, IAppConfig } from '../../src/app.config'
 import { SlothDatabase } from '@irontitan/sloth/dist/modules/database'
+import { BlobStorageClient }  from '../../src/data/clients/BlobStorageClient'
+import sinon from 'sinon'
 
 const options: IAppConfig = {
   ...config,
@@ -24,8 +26,14 @@ const options: IAppConfig = {
 describe('POST /', () => {
   let api: AxiosInstance
   let database: SlothDatabase<States>
+  
 
   before(async () =>{
+    sinon.stub(BlobStorageClient.prototype, 'uploadBase64')
+         .callsFake(async (args) => {
+            return new Promise((resolve) => { resolve(`https://url.com/${args}`)});
+          })
+
     database = await sloth.database.init(states)
     api = axiosist(await app.factory({ ...options, database: { mongodb: database.config } }, env.TEST))
   })
@@ -58,13 +66,13 @@ describe('POST /', () => {
     let response: AxiosResponse
     let profileScope: nock.Scope
     const urlRegex = new RegExp(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi);
-
+    
     before(async () => {
       const founderId = createGroupData.founder.toHexString()
       profileScope = nock(options.microServices.profile.url)
         .get(`/${founderId}`)
         .reply(200, { id: founderId })
-
+        
       response = await api.post('/', createGroupData)
     })
 
@@ -73,7 +81,6 @@ describe('POST /', () => {
     })
 
     it('returns a 201 status code', () => {
-      console.log(response.data)
       expect(response.status).to.be.equal(201)
     })
 
@@ -114,7 +121,7 @@ describe('POST /', () => {
       profileScope = nock(options.microServices.profile.url)
         .get(`/${createGroupData.founder}`)
         .reply(404)
-
+      
       response = await api.post('/', createGroupData)
     })
 
@@ -151,11 +158,11 @@ describe('POST /', () => {
   })
 
   describe('when orginzer is not found [NOT IMPLEMENTED]', () => {
-
+ 
     before(async () => {
       /* TODO: how to mock the findUser request to get a valid founder
        but dont find a orginizer.*/
-
+       
       // See the src/services/GroupService.ts:46 for more details
     })
 

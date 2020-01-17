@@ -1,3 +1,4 @@
+import './tracing.ts'
 import 'reflect-metadata'
 import { config } from './app.config'
 import server from './presentation/server'

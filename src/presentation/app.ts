@@ -5,6 +5,7 @@ import { container } from 'tsyringe'
 import expresso from '@expresso/app'
 import errors from '@expresso/errors'
 import { Services } from '../services'
+import tracing from '@expresso/tracing'
 import { IAppConfig } from '../app.config'
 import { createConnection } from '@nindoo/mongodb-data-layer'
 
@@ -18,6 +19,8 @@ export const app = expresso(async (app, config: IAppConfig, environment: string)
   })
 
   const services = container.resolve(Services)
+
+  app.use(tracing.factory())
 
   app.get('/:group', routes.find(services.group))
   app.get('/', routes.listAll(services.group))

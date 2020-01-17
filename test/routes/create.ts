@@ -44,6 +44,7 @@ describe('POST /', () => {
 
   after(async () => {
     await database.stop()
+    ;(BlobStorageClient.prototype.uploadBase64 as any).restore()
   })
 
   describe('When required parameters are missing', () => {
@@ -76,7 +77,7 @@ describe('POST /', () => {
       response = await api.post('/', createGroupData)
     })
 
-    it('calls ms-user to validate the given user IDs', () => {
+    it('calls ms-profile to validate the given profile IDs', () => {
       expect(profileScope.isDone()).to.be.true
     })
 

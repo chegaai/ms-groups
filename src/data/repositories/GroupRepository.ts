@@ -45,14 +45,9 @@ export class GroupRepository extends MongodbRepository<Group, SerializedGroup> {
 
   async findByIdOrSlug (idOrSlug: string) {
     if (!ObjectId.isValid(idOrSlug)) {
-      return this.findById(idOrSlug)
+      return this.findBySlug(idOrSlug)
     }
 
-    return this.findOneBy({
-      $or: [
-        { _id: new ObjectId(idOrSlug) },
-        { slug: idOrSlug }
-      ]
-    })
+    return this.findById(idOrSlug)
   }
 }

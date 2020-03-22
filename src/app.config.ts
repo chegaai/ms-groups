@@ -1,7 +1,7 @@
 import env from 'sugar-env'
+import { IServerConfig } from '@expresso/server'
 import { IExpressoConfigOptions } from '@expresso/app'
 import { IMongoParams } from '@nindoo/mongodb-data-layer'
-import { IServerConfig } from '@expresso/server'
 
 export interface IAppConfig extends IExpressoConfigOptions {
   name: string,
@@ -24,8 +24,10 @@ export interface IAppConfig extends IExpressoConfigOptions {
   }
 }
 
+const APP_NAME = 'ms-groups'
+
 export const config: IAppConfig = {
-  name: 'ms-groups',
+  name: APP_NAME,
   server: {
     printOnListening: true,
   },

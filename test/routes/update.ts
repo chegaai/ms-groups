@@ -26,6 +26,10 @@ const options: IAppConfig = {
 describe('PUT /', () => {
   let api: AxiosInstance
   let database: SlothDatabase<States>
+<<<<<<< HEAD
+  
+=======
+>>>>>>> master
 
   before(async () =>{
     
